@@ -1,0 +1,67 @@
+import unittest
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
+
+
+class Testing(unittest.TestCase):
+    def test_open_and_closed_website(self) -> None:
+        driver = webdriver.Firefox()
+
+        driver.get("https://www.google.com/")
+
+        # Ввод данных
+        find_site = driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input")
+        find_site.send_keys("«Эффективное тестирование программ»  ")
+
+        # Клик по поиску
+        driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[3]/center/input[1]").click()
+        time.sleep(5)
+
+        # Цикл извлечения 3 вкладок ссылок и запись в первый список
+        arr1 = []
+        for c in range(3, 6):
+            for i in range(10):
+                elems = driver.find_elements(By.XPATH, f"//*[@id='rso']/div[{i}]/div/div/div[1]/a")
+                for elem in elems:
+                    tik1 = elem.get_attribute("href")
+                    arr1.append(tik1[0:35])
+            time.sleep(4)
+            driver.find_element(By.XPATH, f"//*[@id='xjs']/table/tbody/tr/td[{c}]/a").click()
+        print(arr1)
+
+        # Очистка поиска
+        driver.find_element(By.XPATH, "/html/body/div[4]/div[2]/form/div[1]/div[1]/div[2]/div/div[2]/input").clear()
+
+        # Повторное ввод данных без ковычек
+        find_site1 = driver.find_element(By.XPATH, "//*[@id='tsf']/div[1]/div[1]/div[2]/div/div[2]/input")
+        find_site1.send_keys("Эффективное тестирование программ  ")
+
+        # Клик по поиску
+        driver.find_element(By.XPATH, "/html/body/div[4]/div[2]/form/div[1]/div[1]/div[2]/button").click()
+        print("\n")
+
+        # Цикл извлечения ссылок с 1 вкладки и запись во второй список
+        arr2 = []
+        # for d in range(3, 6):
+        for j in range(10):
+            elems = driver.find_elements(By.XPATH, f"//*[@id='rso']/div[{j}]/div/div/div[1]/a")
+            for elem in elems:
+                tik2 = elem.get_attribute("href")
+                arr2.append(tik2[0:35])
+        time.sleep(4)
+        #    driver.find_element(By.XPATH, f"//*[@id='xjs']/table/tbody/tr/td[{d}]/a").click()
+        print(arr2)
+
+        # Определение количество появлений каждой из ссылок второго массива в каждом массиве
+        for number in arr2:
+            a = arr1.count(number)
+            print(a)
+
+        time.sleep(5)
+        driver.close()
+
+        if __name__ == "__main__":
+            pass
+        driver.quit()
