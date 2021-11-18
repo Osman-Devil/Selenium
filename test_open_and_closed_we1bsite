@@ -1,0 +1,43 @@
+import unittest
+from selenium import webdriver
+import time
+from selenium.webdriver.common.by import By
+
+
+class Testing(unittest.TestCase):
+    def test_open_and_closed_website(self) -> None:
+        driver = webdriver.Firefox()
+
+        # Открыть блог с системой поиска
+        driver.get("http://blogs.yandex.ru/")
+        time.sleep(1)
+
+        # driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[3]/div/form/div/div[1]/input").click()
+        # time.sleep(1)
+
+        # Создали список для запроса тега 4 раза в поисковик
+        arr = {"#github", "#cats", "#cars", "#bass"}
+        for elem in arr:
+
+            # Запись тегов
+            find_site = driver.find_element(By.XPATH, "/html/body/header/div/div/div[3]/form/div[1]/span/span/input")
+            find_site.send_keys(f"{elem}")
+            time.sleep(2)
+
+            # Кнопка поиск
+            driver.find_element(By.XPATH, "/html/body/header/div/div/div[3]/form/div[2]/button/div[3]").click()
+
+            # Поиск по классу в теге
+            tag = driver.find_elements(By.CLASS_NAME, "OrganicTitleContentSpan")
+            for elem1 in tag:
+                print(elem1.text)
+            time.sleep(3)
+
+            # Очистка поисковика
+            driver.find_element(By.XPATH, "/html/body/header/div/div/div[3]/form/div[1]/span/span/input").clear()
+            print("\n")
+
+
+        if __name__ == "__main__":
+            pass
+        driver.quit()
