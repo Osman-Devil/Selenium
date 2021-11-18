@@ -1,0 +1,56 @@
+import unittest
+from selenium import webdriver
+import time
+from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+
+
+class Testing(unittest.TestCase):
+    def test_calculator_testing(self) -> None:
+        driver = webdriver.Firefox()
+
+        driver.get("https://www.psychicscience.org/random.aspx")
+
+        for i in range(2):
+            arr_gen = str(input("Введите количество генерируемых чисел: "))
+            arr_with = str(input("От какого: "))
+            arr_before = str(input("До какого: "))
+            type_sequenses = str(input("1. Открытая последовательность \n"
+                                       "2. Закрытая последовательность\n"
+                                       "3. Уникальные числа \n"))
+            a = type_sequenses
+           # // *[ @ id = "num"]
+            # Выдает количество генерируемых чисел
+            generate_int = driver.find_element(By.XPATH, "//*[@id='num']")
+            generate_int.send_keys(arr_gen)
+
+            # Выдает от какого числа будет генерироваться
+            between_with = driver.find_element(By.XPATH, "//*[@id='st']")
+            between_with.send_keys(arr_with)
+
+            # Выдает до какого числа будет генерироваться
+            between_before = driver.find_element(By.XPATH, "//*[@id='en']")
+            between_before.send_keys(arr_before)
+
+            # Выдает какой будет операция открытая последовательность, закрытая последовательность или уникальные числа
+            driver.find_element(By.XPATH, f"//*[@id='rpt']/option[{a}]").click()
+
+            # Нажатие на кнопки расчета
+            button_go = driver.find_element(By.XPATH, "//*[@id='go']")
+            button_go.send_keys(Keys.RETURN)
+
+            time.sleep(5)
+
+            # Поиск по XPATH и очистка полей
+            driver.find_element(By.XPATH, "//*[@id='num']").clear()
+            driver.find_element(By.XPATH, "//*[@id='st']").clear()
+            driver.find_element(By.XPATH, "//*[@id='en']").clear()
+
+            time.sleep(5)
+
+        driver.close()
+
+        if __name__ == "__main__":
+            pass
+
+        driver.quit()
